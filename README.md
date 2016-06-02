@@ -18,15 +18,15 @@ But wait, what is it ? what is ... toolbar on the top position ? Why I can't clo
 
 **I can't** use it normally with some applications at all. *Illustration with Firefox:*
 
-![TeamViewer_toolbar.gif](https://raw.githubusercontent.com/3F/TmVTweaks/master/TmVTweaks/doc/img/TeamViewer_toolbar.gif)
+![TeamViewer_toolbar.gif](https://raw.githubusercontent.com/3F/TmVTweaks/master/doc/img/TeamViewer_toolbar.gif)
 
 I also noticed bug with FullScreen mode, when my mouse is not activated at the top window. *Illustration with Firefox:*
 
-![bugscreen.gif](https://raw.githubusercontent.com/3F/TmVTweaks/master/TmVTweaks/doc/img/bugscreen.gif)
+![bugscreen.gif](https://raw.githubusercontent.com/3F/TmVTweaks/master/doc/img/bugscreen.gif)
 
 The reason of bug:
 
-![bugscreen_reason.png](https://raw.githubusercontent.com/3F/TmVTweaks/master/TmVTweaks/doc/img/bugscreen_reason.png)
+![bugscreen_reason.png](https://raw.githubusercontent.com/3F/TmVTweaks/master/doc/img/bugscreen_reason.png)
 
 Of course I reported about 2 critical (for me) bugs above, before starting of this fixes ! But no action...
 
@@ -36,7 +36,7 @@ I see only a lot of [new versions](https://www.teamviewer.com/en/download/change
 
 My quick implementation was yesterday, and currently we have the following features:
 
-![TmVTweaks_menu.png](https://raw.githubusercontent.com/3F/TmVTweaks/master/TmVTweaks/doc/img/TmVTweaks_menu.png)
+![TmVTweaks_menu.png](https://raw.githubusercontent.com/3F/TmVTweaks/master/doc/img/TmVTweaks_menu.png)
 
 That's all, just a tweaks for TeamViewer software. *Maybe later it will be fixed by company, but today...*
 
