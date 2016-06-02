@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmVTweaks", "TmVTweaks\TmVTweaks.csproj", "{CF4FD0CE-33CD-425D-AF72-1E9586F469D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{90005A0B-6001-492F-8C5E-964030824B53}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmVTweaksTest", "TmVTweaksTest\TmVTweaksTest.csproj", "{4F44294D-7719-49D7-8023-6D2B1945DFC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF4FD0CE-33CD-425D-AF72-1E9586F469D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF4FD0CE-33CD-425D-AF72-1E9586F469D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF4FD0CE-33CD-425D-AF72-1E9586F469D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF4FD0CE-33CD-425D-AF72-1E9586F469D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F44294D-7719-49D7-8023-6D2B1945DFC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F44294D-7719-49D7-8023-6D2B1945DFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F44294D-7719-49D7-8023-6D2B1945DFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F44294D-7719-49D7-8023-6D2B1945DFC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
