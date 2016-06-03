@@ -47,7 +47,16 @@ namespace net.r_eg.TmVTweaks
             }
         }
 
-        public UsualLog(bool diag = true)
+        /// <summary>
+        /// Thread-safe getting the instance of UsualLog class
+        /// </summary>
+        public static IUsualLog _
+        {
+            get { return _lazy.Value; }
+        }
+        private static readonly Lazy<IUsualLog> _lazy = new Lazy<IUsualLog>(() => new UsualLog());
+
+        protected UsualLog(bool diag = true)
         {
             IsDiagnostic = diag;
         }

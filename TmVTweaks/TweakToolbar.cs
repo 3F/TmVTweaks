@@ -19,8 +19,9 @@ namespace net.r_eg.TmVTweaks
         /// <param name="status"></param>
         public void showPanel(bool status)
         {
-            foreach(ITeamViewer tv in data.TeamViewers)
+            foreach(var tvs in data.TeamViewers)
             {
+                ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleBy(TVControls.ToolBar.NAME, TVControls.ToolBar.CID);
                 if(h.found) {
                     log.debug($"showPanel({status}): found handle - {h.hWnd}");
@@ -38,8 +39,9 @@ namespace net.r_eg.TmVTweaks
         /// </summary>
         public void minimizePanel()
         {
-            foreach(ITeamViewer tv in data.TeamViewers)
+            foreach(var tvs in data.TeamViewers)
             {
+                ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleByCID(TVControls.ToolBar.MINIMIZE_CID);
                 if(h.found) {
                     log.debug($"minimizePanel: found handle - {h.hWnd}");
@@ -53,8 +55,9 @@ namespace net.r_eg.TmVTweaks
         /// </summary>
         public void fullscreen()
         {
-            foreach(ITeamViewer tv in data.TeamViewers)
+            foreach(var tvs in data.TeamViewers)
             {
+                ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleByCID(TVControls.ToolBar.FULLSCR_CID);
                 if(h.found) {
                     log.debug($"fullscreen: found handle - {h.hWnd}");

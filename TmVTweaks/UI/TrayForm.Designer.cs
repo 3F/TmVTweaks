@@ -49,6 +49,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMonitoring = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTray.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,12 +70,13 @@
             this.menuSrcCode,
             this.menuSettings,
             this.menuSearch,
+            this.menuMonitoring,
             this.menuTeamViewers,
             this.toolStripSeparator1,
             this.menuAbout,
             this.menuExit});
             this.menuTray.Name = "menuTray";
-            this.menuTray.Size = new System.Drawing.Size(189, 192);
+            this.menuTray.Size = new System.Drawing.Size(189, 236);
             // 
             // menuCaption
             // 
@@ -213,6 +215,13 @@
             this.menuExit.Text = "Exit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
+            // menuMonitoring
+            // 
+            this.menuMonitoring.Name = "menuMonitoring";
+            this.menuMonitoring.Size = new System.Drawing.Size(188, 22);
+            this.menuMonitoring.Text = "Monitoring";
+            this.menuMonitoring.Click += new System.EventHandler(this.menuMonitoring_Click);
+            // 
             // TrayForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -255,6 +264,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuSearch;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem menuMonitoring;
     }
 }
 

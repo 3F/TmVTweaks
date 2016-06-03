@@ -23,9 +23,9 @@ namespace net.r_eg.TmVTweaks
         event EventHandler<EventArgs> Updated;
 
         /// <summary>
-        /// List of the TeamViewer instances.
+        /// List of the TeamViewer instances by PID.
         /// </summary>
-        List<ITeamViewer> TeamViewers { get; }
+        Dictionary<int, ITeamViewer> TeamViewers { get; }
 
         /// <summary>
         /// The process name for searching of the TeamViewer for this collection.
@@ -33,8 +33,19 @@ namespace net.r_eg.TmVTweaks
         string ProcessName { get; }
 
         /// <summary>
+        /// Interval of monitoring of processes.
+        /// </summary>
+        int MonitoringInterval { get; set; }
+
+        /// <summary>
         /// To find all processes.
         /// </summary>
         void findAll();
+
+        /// <summary>
+        /// Monitoring of processes.
+        /// </summary>
+        /// <param name="enable"></param>
+        void monitoring(bool enable);
     }
 }

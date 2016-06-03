@@ -20,8 +20,9 @@ namespace net.r_eg.TmVTweaks
         /// </summary>
         public void zeroPosition()
         {
-            foreach(ITeamViewer tv in data.TeamViewers)
+            foreach(var tvs in data.TeamViewers)
             {
+                ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleBy(TVControls.MainScreen.NAME, TVControls.MainScreen.CID);
                 if(!h.found) {
                     continue;

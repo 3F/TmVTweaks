@@ -19,7 +19,7 @@ namespace net.r_eg.TmVTweaks
     /// </summary>
     public abstract class WndEx 
     {
-        internal IUsualLog log = new UsualLog();
+        internal IUsualLog log = UsualLog._;
 
         protected void setWindowStyle(IntPtr hWnd, long style)
         {

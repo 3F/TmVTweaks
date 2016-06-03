@@ -23,7 +23,7 @@ namespace net.r_eg.TmVTweaks.HotKeys
         /// </summary>
         public event EventHandler<HotKeyEventArgs> KeyPress = delegate(object sender, HotKeyEventArgs e) { };
 
-        internal IUsualLog log = new UsualLog();
+        internal IUsualLog log = UsualLog._;
 
         private IdentHotKey uid = new IdentHotKey();
         private object _lock    = new object();

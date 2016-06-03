@@ -10,7 +10,7 @@ The [MIT License (MIT)](https://github.com/3F/TmVTweaks/blob/master/LICENSE)
 
 ### A true story
 
-*I have a long interesting history, well probably longer than interesting... :)*
+*I have a long interesting history, well it probably a long than interesting... :)*
 
 I used a very long years the [TightVNC](http://www.tightvnc.com/) for complete remote work with all my different types of home PC (I have many, and several without monitor at all). Then I found [TeamViewer](https://www.teamviewer.com/), that is more convenient for common operations. Good, I thought, and tried to go to the primary use.
 
@@ -24,11 +24,11 @@ I also noticed bug with FullScreen mode, when my mouse is not activated at the t
 
 ![bugscreen.gif](https://raw.githubusercontent.com/3F/TmVTweaks/master/doc/img/bugscreen.gif)
 
-The reason of bug:
+The reason of this bug is also trivial:
 
 ![bugscreen_reason.png](https://raw.githubusercontent.com/3F/TmVTweaks/master/doc/img/bugscreen_reason.png)
 
-Of course I reported about 2 critical (for me) bugs above, before starting of this fixes ! But no action...
+Of course I reported about 2 critical (for me) bugs above, before starting of this fixes ! But no reaction...
 
 `My request is here - 16.03.2016 - Ticket ID: 2404963`
 

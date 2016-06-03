@@ -8,6 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace net.r_eg.TmVTweaks
 {
@@ -28,6 +31,14 @@ namespace net.r_eg.TmVTweaks
         /// </summary>
         public event EventHandler<EventArgs> Updated = delegate(object sender, EventArgs e) { };
 
+        internal IUsualLog log = UsualLog._;
+
+        /// <summary>
+        /// flag of processing of monitoring.
+        /// </summary>
+        private volatile bool isMonitoringActive;
+        private object _lock = new object();
+
         /// <summary>
         /// The process name for searching of the TeamViewer for this collection.
         /// </summary>
@@ -38,13 +49,22 @@ namespace net.r_eg.TmVTweaks
         }
 
         /// <summary>
-        /// List of the TeamViewer instances.
+        /// Interval of monitoring of processes.
         /// </summary>
-        public List<ITeamViewer> TeamViewers
+        public int MonitoringInterval
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// List of the TeamViewer instances by PID.
+        /// </summary>
+        public Dictionary<int, ITeamViewer> TeamViewers
         {
             get { return teamViewers; }
         }
-        protected List<ITeamViewer> teamViewers = new List<ITeamViewer>();
+        protected Dictionary<int, ITeamViewer> teamViewers = new Dictionary<int, ITeamViewer>();
 
         /// <summary>
         /// To find all processes.
@@ -56,17 +76,103 @@ namespace net.r_eg.TmVTweaks
             {
                 ITeamViewer tv = new TeamViewer(p);
                 BeforeAdd(this, new TeamViewerEventArgs(tv));
-                teamViewers.Add(tv);
+                teamViewers[p.Id] = tv;
             }
 
             Updated(this, new EventArgs());
         }
 
+        /// <summary>
+        /// Monitoring of processes.
+        /// </summary>
+        /// <param name="enable"></param>
+        public void monitoring(bool enable)
+        {
+            lock(_lock)
+            {
+                if(enable && isMonitoringActive) {
+                    log.debug("The monitoring of processes is already started.");
+                    return;
+                }
+                log.info($"Monitoring of processes: {(enable ? "start" : "stop")}. Interval: {MonitoringInterval}");
+
+                isMonitoringActive = enable;
+                if(!enable) {
+                    return;
+                }
+                monitoringStart();
+            }
+        }
+
         /// <param name="pname">Optional custom process name for searching of the TeamViewer.</param>
         public TeamViewerCollection(string pname = null)
         {
-            ProcessName = String.IsNullOrWhiteSpace(pname) ? DEFAULT_PROCNAME : pname;
+            ProcessName         = String.IsNullOrWhiteSpace(pname) ? DEFAULT_PROCNAME : pname;
+            MonitoringInterval  = 5000;
         }
 
+        protected virtual void monitoringStart()
+        {
+            Task.Factory.StartNew(() => 
+            {
+                while(isMonitoringActive) {
+                    removeProcess();
+                    findProcess();
+                    Thread.Sleep(Math.Max(250, MonitoringInterval));
+                }
+            });
+        }
+
+        /// <summary>
+        /// To find each process.
+        /// </summary>
+        protected virtual void findProcess()
+        {
+            bool isAdded = false;
+            foreach(var p in Process.GetProcessesByName(ProcessName))
+            {
+                if(teamViewers.ContainsKey(p.Id)) {
+                    continue;
+                }
+                ITeamViewer tv = new TeamViewer(p);
+
+                BeforeAdd(this, new TeamViewerEventArgs(tv));
+                teamViewers[p.Id] = tv;
+                isAdded = true;
+
+                log.info($"Found process: {p.Id} : {tv.CommandLine}");
+            }
+
+            if(isAdded) {
+                Updated(this, new EventArgs());
+            }
+        }
+
+        /// <summary>
+        /// To remove each obsolete process.
+        /// </summary>
+        protected virtual void removeProcess()
+        {
+            bool isRemoved = false;
+            foreach(var tvs in teamViewers.ToArray()) //collection may be changed, use ToArray()
+            {
+                int pid = tvs.Key;
+
+                if(!processExists(pid)) {
+                    teamViewers.Remove(pid);
+                    isRemoved = true;
+                    log.info($"Process: {pid} has been removed.");
+                }
+            }
+
+            if(isRemoved) {
+                Updated(this, new EventArgs());
+            }
+        }
+
+        private bool processExists(int pid)
+        {
+            return Process.GetProcesses().Any(p => p.Id == pid);
+        }
     }
 }

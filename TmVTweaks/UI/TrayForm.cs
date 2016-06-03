@@ -22,7 +22,7 @@ namespace net.r_eg.TmVTweaks.UI
         private ITweakToolbar twToolbar;
         private ITweakScreen twScreen;
 
-        private IUsualLog log = new UsualLog();
+        private IUsualLog log = UsualLog._;
 
         public TrayForm()
         {
@@ -43,6 +43,7 @@ namespace net.r_eg.TmVTweaks.UI
             teamViewers.Updated     += onTvUpdated;
 
             tweaksInit(teamViewers);
+            monitoring(true);
         }
 
         private void tweaksInit(ITeamViewerCollection tvs)
@@ -63,10 +64,29 @@ namespace net.r_eg.TmVTweaks.UI
             }
         }
 
+        /// <summary>
+        /// thread-safe ui changes
+        /// </summary>
+        /// <param name="m"></param>
+        private void uiAction(MethodInvoker m)
+        {
+            if(InvokeRequired) {
+                BeginInvoke(m);
+                return;
+            }
+            m();
+        }
+
         private void showToolbar(bool status)
         {
             twToolbar.showPanel(status);
             menuToolBarShow.Checked = status;
+        }
+
+        private void monitoring(bool status)
+        {
+            teamViewers.monitoring(status);
+            menuMonitoring.Checked = status;
         }
 
         /// <summary>
@@ -117,13 +137,20 @@ namespace net.r_eg.TmVTweaks.UI
 
         private void onTvUpdated(object sender, EventArgs e)
         {
-            menuTeamViewers.DropDownItems.Clear();
-            foreach(ITeamViewer tv in ((ITeamViewerCollection)sender).TeamViewers)
+            var collection = ((ITeamViewerCollection)sender).TeamViewers;
+
+            uiAction(() => menuTeamViewers.Enabled = (collection.Count > 0));
+            uiAction(() => menuTeamViewers.DropDownItems.Clear());
+
+            foreach(var tvs in collection)
             {
-                menuTeamViewers.DropDownItems.Add(
-                    new ToolStripMenuItem($"PID: {tv.MainProcess.Id} :: {tv.ExecutablePath}") {
-                        ToolTipText = tv.CommandLine
-                    }
+                ITeamViewer tv = tvs.Value;
+                uiAction(() =>
+                    menuTeamViewers.DropDownItems.Add(
+                        new ToolStripMenuItem($"PID: {tv.MainProcess.Id} :: {tv.ExecutablePath}") {
+                            ToolTipText = tv.CommandLine
+                        }
+                    )
                 );
             }
         }
@@ -147,6 +174,11 @@ namespace net.r_eg.TmVTweaks.UI
         private void menuSearch_Click(object sender, EventArgs e)
         {
             teamViewers.findAll();
+        }
+
+        private void menuMonitoring_Click(object sender, EventArgs e)
+        {
+            monitoring(!menuMonitoring.Checked);
         }
 
         private void menuToolBarShow_Click(object sender, EventArgs e)
