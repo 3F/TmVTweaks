@@ -6,6 +6,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace net.r_eg.TmVTweaks
 {
@@ -13,23 +14,51 @@ namespace net.r_eg.TmVTweaks
     {
         private ITeamViewerCollection data;
 
+        private struct IterResult
+        {
+            public ITeamViewer teamViewer;
+            public IntPtr hWnd;
+
+            public IterResult(ITeamViewer tv, IntPtr hWnd)
+            {
+                teamViewer  = tv;
+                this.hWnd   = hWnd;
+            }
+        }
+
+        /// <summary>
+        /// Available toolbars from existing TeamViwer collection.
+        /// </summary>
+        private IEnumerable<IterResult> Toolbars
+        {
+            get
+            {
+                foreach(var tvs in data.TeamViewers)
+                {
+                    ITeamViewer tv  = tvs.Value;
+                    THandleResult h = tv.handleBy(TVControls.ToolBar.NAME, TVControls.ToolBar.CID);
+                    if(h.Found) {
+                        yield return new IterResult(tv, h.HWnd);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// To show/hide the top toolbar.
         /// </summary>
         /// <param name="status"></param>
         public void showPanel(bool status)
         {
-            foreach(var tvs in data.TeamViewers)
+            foreach(IterResult t in Toolbars)
             {
-                ITeamViewer tv  = tvs.Value;
-                THandleResult h = tv.handleBy(TVControls.ToolBar.NAME, TVControls.ToolBar.CID);
-                if(h.Found) {
-                    log.debug($"showPanel({status}): found handle - {h.HWnd}");
-                    tv.showControl(h.HWnd, status);
+                log.debug($"showPanel({status}): found handle - {t.hWnd}");
+                t.teamViewer.showControl(t.hWnd, status);
 
-                    // to redraw controls
-                    THandleResult hScr = tv.handleBy(TVControls.MainScreen.NAME, TVControls.MainScreen.CID);
-                    refresh(status ? h.HWnd : hScr.HWnd);
+                // to redraw controls
+                THandleResult hScr = t.teamViewer.handleBy(TVControls.MainScreen.NAME, TVControls.MainScreen.CID);
+                if(hScr.Found) {
+                    refresh(status ? t.hWnd : hScr.HWnd);
                 }
             }
         }
@@ -39,13 +68,12 @@ namespace net.r_eg.TmVTweaks
         /// </summary>
         public void minimizePanel()
         {
-            foreach(var tvs in data.TeamViewers)
+            foreach(IterResult t in Toolbars)
             {
-                ITeamViewer tv  = tvs.Value;
-                THandleResult h = tv.handleByCID(TVControls.ToolBar.MINIMIZE_CID);
+                THandleResult h = t.teamViewer.handleByCID(TVControls.ToolBar.MINIMIZE_CID);
                 if(h.Found) {
                     log.debug($"minimizePanel: found handle - {h.HWnd}");
-                    tv.sendClickFor(h.HWnd);
+                    t.teamViewer.sendClickFor(h.HWnd);
                 }
             }
         }
@@ -55,13 +83,12 @@ namespace net.r_eg.TmVTweaks
         /// </summary>
         public void fullscreen()
         {
-            foreach(var tvs in data.TeamViewers)
+            foreach(IterResult t in Toolbars)
             {
-                ITeamViewer tv  = tvs.Value;
-                THandleResult h = tv.handleByCID(TVControls.ToolBar.FULLSCR_CID);
+                THandleResult h = t.teamViewer.handleByCID(TVControls.ToolBar.FULLSCR_CID);
                 if(h.Found) {
                     log.debug($"fullscreen: found handle - {h.HWnd}");
-                    tv.sendClickFor(h.HWnd);
+                    t.teamViewer.sendClickFor(h.HWnd);
                 }
             }
         }

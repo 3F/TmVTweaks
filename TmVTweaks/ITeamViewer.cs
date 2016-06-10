@@ -52,9 +52,15 @@ namespace net.r_eg.TmVTweaks
         void sendClickFor(IntPtr hWnd);
 
         /// <summary>
-        /// To force update of available handles.
+        /// Update all process data by new instance.
         /// </summary>
-        void refreshChildHandles();
+        /// <param name="p"></param>
+        void updateProcess(Process p);
+
+        /// <summary>
+        /// Force update current process data like handles, descriptors, etc.
+        /// </summary>
+        void updateProcess();
 
         /// <summary>
         /// Find and return handle by control text or ID

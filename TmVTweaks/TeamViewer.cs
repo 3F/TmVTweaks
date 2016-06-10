@@ -110,15 +110,33 @@ namespace net.r_eg.TmVTweaks
         /// <param name="hWnd"></param>
         public void sendClickFor(IntPtr hWnd)
         {
+            if(!isVisible(hWnd)) {
+                return;
+            }
+#if DEBUG
+            log.debug($"send click for {hWnd}");
+#endif
             sendClick(hWnd, 25);
+        }
+        
+        /// <summary>
+        /// Update all process data by new instance.
+        /// </summary>
+        /// <param name="p"></param>
+        public void updateProcess(Process p)
+        {
+            log.info($"update process: PID: {MainProcess.Id}->{p.Id}; H: {MainProcess.MainWindowHandle}->{p.MainWindowHandle}");
+            MainProcess     = p;
+            childHandles    = null;
+            mainProcessEx   = null;
         }
 
         /// <summary>
-        /// To force update of available handles.
+        /// Force update current process data like handles, descriptors, etc.
         /// </summary>
-        public void refreshChildHandles()
+        public void updateProcess()
         {
-            childHandles = getChildWnd(MainHandle);
+            updateProcess(MainProcess); //self
         }
 
         /// <summary>
@@ -193,11 +211,20 @@ namespace net.r_eg.TmVTweaks
         /// <param name="status">show if true</param>
         public void showControl(IntPtr hWnd, bool status)
         {
-            if(status) {
-                setWindowStyle(hWnd, WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE);
+            if(isVisible(hWnd) == status) {
+#if DEBUG
+                log.debug($"showControl(): is already = {status}");
+#endif
                 return;
             }
-            setWindowStyle(hWnd, WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CHILD);
+
+            long style = getWindowStyle(hWnd);
+
+            if(status) {
+                setWindowStyle(hWnd, style | WindowStyles.WS_VISIBLE);
+                return;
+            }
+            setWindowStyle(hWnd, style & ~WindowStyles.WS_VISIBLE);
         }
 
         /// <param name="pid">Process ID</param>

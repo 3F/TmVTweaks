@@ -100,7 +100,7 @@ namespace net.r_eg.TmVTweaks
                 if(!enable) {
                     return;
                 }
-                monitoringStart();
+                monitoring();
             }
         }
 
@@ -108,12 +108,12 @@ namespace net.r_eg.TmVTweaks
         public TeamViewerCollection(string pname = null)
         {
             ProcessName         = String.IsNullOrWhiteSpace(pname) ? DEFAULT_PROCNAME : pname;
-            MonitoringInterval  = 5000;
+            MonitoringInterval  = 3400;
         }
 
-        protected virtual void monitoringStart()
+        protected void monitoring()
         {
-            Task.Factory.StartNew(() => 
+            Task.Factory.StartNew(() =>
             {
                 while(isMonitoringActive) {
                     removeProcess();
@@ -132,6 +132,7 @@ namespace net.r_eg.TmVTweaks
             foreach(var p in Process.GetProcessesByName(ProcessName))
             {
                 if(teamViewers.ContainsKey(p.Id)) {
+                    updateProcess(teamViewers[p.Id], p);
                     continue;
                 }
                 ITeamViewer tv = new TeamViewer(p);
@@ -173,6 +174,13 @@ namespace net.r_eg.TmVTweaks
         private bool processExists(int pid)
         {
             return Process.GetProcesses().Any(p => p.Id == pid);
+        }
+
+        private void updateProcess(ITeamViewer tv, Process p)
+        {
+            if(tv.MainHandle != p.MainWindowHandle) {
+                tv.updateProcess(p);
+            }
         }
     }
 }

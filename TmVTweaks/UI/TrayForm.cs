@@ -29,9 +29,11 @@ namespace net.r_eg.TmVTweaks.UI
             InitializeComponent();
 
             try {
-                notifyIconMain.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+                notifyIconMain.Icon = Icon 
+                                    = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             }
             catch(ArgumentException ex) {
+                notifyIconMain.Icon = Icon;
                 log.debug(ex.Message);
             }
 
@@ -58,6 +60,7 @@ namespace net.r_eg.TmVTweaks.UI
                 hotKeys.register(mcomb, Keys.F12);
                 hotKeys.register(mcomb, Keys.F11);
                 hotKeys.register(mcomb, Keys.F10);
+                hotKeys.register(mcomb, Keys.F9);
                 hotKeys.register(mcomb, Keys.F1);
             }
             catch(Exception ex) {
@@ -81,13 +84,13 @@ namespace net.r_eg.TmVTweaks.UI
         private void showToolbar(bool status)
         {
             twToolbar.showPanel(status);
-            menuToolBarShow.Checked = status;
+            uiAction(() => menuToolBarShow.Checked = status);
         }
 
         private void monitoring(bool status)
         {
             teamViewers.monitoring(status);
-            menuMonitoring.Checked = status;
+            uiAction(() => menuMonitoring.Checked = status);
         }
 
         /// <summary>
@@ -115,7 +118,7 @@ namespace net.r_eg.TmVTweaks.UI
                 return;
             }
 
-            log.info($"Received [Ctrl + Alt + RShift] + {e.Key}");
+            log.info($"Received [Ctrl + Alt + RShift] + {e.Key.ToString()}");
             switch(e.Key)
             {
                 case Keys.F9: {
@@ -214,13 +217,13 @@ namespace net.r_eg.TmVTweaks.UI
 
         private void menuToolBarMinimize_Click(object sender, EventArgs e)
         {
-            menuToolBarMinimize.Checked = !menuToolBarMinimize.Checked;
+            uiAction(() => menuToolBarMinimize.Checked = !menuToolBarMinimize.Checked);
             twToolbar.minimizePanel();
         }
 
         private void menuFullScreen_Click(object sender, EventArgs e)
         {
-            menuFullScreen.Checked = !menuFullScreen.Checked;
+            uiAction(() => menuFullScreen.Checked = !menuFullScreen.Checked);
             twToolbar.fullscreen();
         }
 

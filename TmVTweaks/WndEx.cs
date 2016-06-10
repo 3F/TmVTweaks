@@ -57,9 +57,10 @@ namespace net.r_eg.TmVTweaks
 
         protected string getWindowText(IntPtr hWnd)
         {
-            var buffer = new StringBuilder();
-            NativeMethods.GetWindowText(hWnd, buffer, 200);
+            int len = NativeMethods.GetWindowTextLength(hWnd);
 
+            var buffer = new StringBuilder(len + 1); // +1 extra byte being a null string-terminating character
+            NativeMethods.GetWindowText(hWnd, buffer, buffer.Capacity);
             return buffer.ToString();
         }
 
@@ -85,8 +86,9 @@ namespace net.r_eg.TmVTweaks
                 ((List<IntPtr>)gch.Target).Add(handle);
                 return true;
             }
-            catch(Exception ex) {
-                log.debug(ex.Message);
+            catch {
+                //throw new WinFuncFailException();
+                log.debug($"Win32 Error: {Marshal.GetLastWin32Error()}");
             }
 
             return false;

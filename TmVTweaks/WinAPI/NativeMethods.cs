@@ -51,8 +51,19 @@ namespace net.r_eg.TmVTweaks.WinAPI
         /// <param name="lpString"></param>
         /// <param name="nMaxCount"></param>
         /// <returns></returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int GetWindowText(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpString, int nMaxCount);
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+        /// <summary>
+        /// Retrieves the length, in characters, of the specified window's title bar text (if the window has a title bar). 
+        /// If the specified window is a control, the function retrieves the length of the text within the control. 
+        /// However, GetWindowTextLength cannot retrieve the length of the text of an edit control in another application.
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633521%28v=vs.85%29.aspx
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern int GetWindowTextLength(IntPtr hWnd);
 
         /// <summary>
         /// Retrieves information about the specified window.
