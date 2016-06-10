@@ -23,13 +23,13 @@ namespace net.r_eg.TmVTweaks
             {
                 ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleBy(TVControls.ToolBar.NAME, TVControls.ToolBar.CID);
-                if(h.found) {
-                    log.debug($"showPanel({status}): found handle - {h.hWnd}");
-                    tv.showControl(h.hWnd, status);
+                if(h.Found) {
+                    log.debug($"showPanel({status}): found handle - {h.HWnd}");
+                    tv.showControl(h.HWnd, status);
 
                     // to redraw controls
                     THandleResult hScr = tv.handleBy(TVControls.MainScreen.NAME, TVControls.MainScreen.CID);
-                    refresh(status ? h.hWnd : hScr.hWnd);
+                    refresh(status ? h.HWnd : hScr.HWnd);
                 }
             }
         }
@@ -43,9 +43,9 @@ namespace net.r_eg.TmVTweaks
             {
                 ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleByCID(TVControls.ToolBar.MINIMIZE_CID);
-                if(h.found) {
-                    log.debug($"minimizePanel: found handle - {h.hWnd}");
-                    tv.sendClickFor(h.hWnd);
+                if(h.Found) {
+                    log.debug($"minimizePanel: found handle - {h.HWnd}");
+                    tv.sendClickFor(h.HWnd);
                 }
             }
         }
@@ -59,9 +59,9 @@ namespace net.r_eg.TmVTweaks
             {
                 ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleByCID(TVControls.ToolBar.FULLSCR_CID);
-                if(h.found) {
-                    log.debug($"fullscreen: found handle - {h.hWnd}");
-                    tv.sendClickFor(h.hWnd);
+                if(h.Found) {
+                    log.debug($"fullscreen: found handle - {h.HWnd}");
+                    tv.sendClickFor(h.HWnd);
                 }
             }
         }

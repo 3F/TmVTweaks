@@ -14,11 +14,25 @@ namespace net.r_eg.TmVTweaks
         /// <summary>
         /// Is actually found the handle.
         /// </summary>
-        public bool found;
+        public bool Found
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The found handle.
         /// </summary>
-        public IntPtr hWnd;
+        public IntPtr HWnd
+        {
+            get;
+            private set;
+        }
+
+        public THandleResult(IntPtr hWnd)
+        {
+            HWnd    = hWnd;
+            Found   = true;
+        }
     }
 }

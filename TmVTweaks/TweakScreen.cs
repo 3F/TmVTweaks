@@ -24,20 +24,20 @@ namespace net.r_eg.TmVTweaks
             {
                 ITeamViewer tv  = tvs.Value;
                 THandleResult h = tv.handleBy(TVControls.MainScreen.NAME, TVControls.MainScreen.CID);
-                if(!h.found) {
+                if(!h.Found) {
                     continue;
                 }
-                log.debug($"zeroPosition: found handle - {h.hWnd}");
+                log.debug($"zeroPosition: found handle - {h.HWnd}");
 
                 NativeMethods.RECT r;
 
-                if(!NativeMethods.GetClientRect(h.hWnd, out r)) {
+                if(!NativeMethods.GetClientRect(h.HWnd, out r)) {
                     log.info($"GetClientRect [Error: {Marshal.GetLastWin32Error()}]");
                     continue;
                 }
 
                 // Fix Top 1 -> 0
-                if(!NativeMethods.MoveWindow(h.hWnd, 0, 0, r.right + r.left, r.bottom + r.top, true)) {
+                if(!NativeMethods.MoveWindow(h.HWnd, 0, 0, r.right + r.left, r.bottom + r.top, true)) {
                     log.info($"MoveWindow [Error: {Marshal.GetLastWin32Error()}]");
                     continue;
                 }

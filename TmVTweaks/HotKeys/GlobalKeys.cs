@@ -38,6 +38,10 @@ namespace net.r_eg.TmVTweaks.HotKeys
         {
             lock(_lock)
             {
+                if(Handle == IntPtr.Zero) {
+                    createHandle();
+                }
+
                 try {
                     bool success = NativeMethods.RegisterHotKey(Handle, uid.Current, (uint)mod, (uint)key);
                     if(success) {
@@ -60,6 +64,10 @@ namespace net.r_eg.TmVTweaks.HotKeys
         /// <returns></returns>
         public bool unregister(int ident)
         {
+            if(Handle == IntPtr.Zero) {
+                return false;
+            }
+
             log.info($"Free a Hotkey #{ident}");
             return NativeMethods.UnregisterHotKey(Handle, ident);
         }
@@ -74,18 +82,9 @@ namespace net.r_eg.TmVTweaks.HotKeys
             return (NativeMethods.GetKeyState((int)key) & 0x8000) != 0;
         }
 
-        public GlobalKeys()
+        protected void createHandle()
         {
             CreateHandle(new CreateParams()); // to WndProc
-        }
-
-        public void Dispose()
-        {
-            foreach(var i in uid.Iter) {
-                unregister(i);
-            }
-
-            DestroyHandle();
         }
 
         protected override void WndProc(ref Message m)
@@ -102,5 +101,35 @@ namespace net.r_eg.TmVTweaks.HotKeys
 
             KeyPress(this, new HotKeyEventArgs(modifier, key, m));
         }
+
+        #region IDisposable
+
+        /// <summary>
+        /// To detect redundant calls
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
+        /// To correctly implement the disposable pattern.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposed) {
+                return;
+            }
+            disposed = true;
+
+            foreach(var i in uid.Iter) {
+                unregister(i);
+            }
+            DestroyHandle();
+        }
+
+        #endregion
     }
 }

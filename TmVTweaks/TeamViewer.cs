@@ -129,7 +129,7 @@ namespace net.r_eg.TmVTweaks
         public THandleResult handleBy(string text, int cid)
         {
             var h = handleByText(text, true);
-            if(h.found) {
+            if(h.Found) {
                 return h;
             }
             return handleByCID(cid);
@@ -143,7 +143,7 @@ namespace net.r_eg.TmVTweaks
         {
             foreach(var hWnd in ChildHandles) {
                 if(getControlId(hWnd) == id) {
-                    return new THandleResult() { found = true, hWnd = hWnd };
+                    return new THandleResult(hWnd);
                 }
             }
             return default(THandleResult);
@@ -164,7 +164,7 @@ namespace net.r_eg.TmVTweaks
             {
                 string actual = getWindowText(hWnd);
                 if(!String.IsNullOrWhiteSpace(actual) && actual.Equals(expected, StringComparison.OrdinalIgnoreCase)) {
-                    return new THandleResult() { found = true, hWnd = hWnd };
+                    return new THandleResult(hWnd);
                 }
             }
 
@@ -179,7 +179,7 @@ namespace net.r_eg.TmVTweaks
             {
                 string actual = getWindowText(hWnd);
                 if(!String.IsNullOrWhiteSpace(actual) && Regex.IsMatch(actual, mask, RegexOptions.IgnoreCase)) {
-                    return new THandleResult() { found = true, hWnd = hWnd };
+                    return new THandleResult(hWnd);
                 }
             }
 

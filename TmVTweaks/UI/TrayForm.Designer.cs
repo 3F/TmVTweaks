@@ -16,6 +16,7 @@
             if(disposing && (components != null)) {
                 components.Dispose();
             }
+            hotKeys.Dispose();
             base.Dispose(disposing);
         }
 

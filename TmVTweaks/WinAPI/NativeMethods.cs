@@ -11,7 +11,7 @@ using System.Text;
 
 namespace net.r_eg.TmVTweaks.WinAPI
 {
-    public static class NativeMethods
+    internal static class NativeMethods
     {
         /// <summary>
         /// The system assigns a slightly higher priority to the thread that created the foreground window. 
@@ -52,7 +52,7 @@ namespace net.r_eg.TmVTweaks.WinAPI
         /// <param name="nMaxCount"></param>
         /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr GetWindowText(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpString, int nMaxCount);
+        public static extern int GetWindowText(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpString, int nMaxCount);
 
         /// <summary>
         /// Retrieves information about the specified window.
@@ -66,6 +66,8 @@ namespace net.r_eg.TmVTweaks.WinAPI
 
         /// <summary>
         /// Changes an attribute of the specified window.
+        /// This function has been superseded by the SetWindowLongPtr function.
+        /// !*! To write code that is compatible with both 32-bit and 64-bit versions of Windows, use the SetWindowLongPtr.
         /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633591%28v=vs.85%29.aspx
         /// </summary>
         /// <param name="hWnd"></param>
@@ -73,7 +75,7 @@ namespace net.r_eg.TmVTweaks.WinAPI
         /// <param name="dwNewLong"></param>
         /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, long dwNewLong);
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         /// <summary>
         /// Defines a system-wide hot key.
@@ -109,7 +111,7 @@ namespace net.r_eg.TmVTweaks.WinAPI
         /// <param name="lParam"></param>
         /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
         /// <summary>
         /// Adds a rectangle to the specified window's update region. The update region represents the portion of the window's client area that must be redrawn.

@@ -23,7 +23,7 @@ namespace net.r_eg.TmVTweaks
 
         protected void setWindowStyle(IntPtr hWnd, long style)
         {
-            NativeMethods.SetWindowLong(hWnd, GWL.GWL_STYLE, style);
+            NativeMethods.SetWindowLong(hWnd, GWL.GWL_STYLE, (int)style);
         }
 
         protected bool isVisible(IntPtr hWnd)
