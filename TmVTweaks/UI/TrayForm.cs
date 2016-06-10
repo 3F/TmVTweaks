@@ -41,6 +41,7 @@ namespace net.r_eg.TmVTweaks.UI
             hotKeys.KeyPress        += onHotKeys;
             teamViewers.BeforeAdd   += onTvBeforeAdd;
             teamViewers.Updated     += onTvUpdated;
+            log.Received            += LogMsgReceived;
 
             tweaksInit(teamViewers);
             monitoring(true);
@@ -98,6 +99,12 @@ namespace net.r_eg.TmVTweaks.UI
             System.Diagnostics.Process.Start(url);
         }
 
+        private void dispose()
+        {
+            log.Received -= LogMsgReceived;
+            hotKeys.Dispose();
+        }
+
         private void onHotKeys(object sender, HotKeyEventArgs e)
         {
             if(e.Modifier != (Modifiers.ControlKey | Modifiers.AltKey | Modifiers.ShiftKey)) {
@@ -108,6 +115,7 @@ namespace net.r_eg.TmVTweaks.UI
                 return;
             }
 
+            log.info($"Received [Ctrl + Alt + RShift] + {e.Key}");
             switch(e.Key)
             {
                 case Keys.F9: {
@@ -158,6 +166,24 @@ namespace net.r_eg.TmVTweaks.UI
         private void onTvBeforeAdd(object sender, TeamViewerEventArgs e)
         {
 
+        }
+
+        private void LogMsgReceived(object sender, MessageEventArgs e)
+        {
+            var msg = e.Message;
+            const int MAXL = 70;
+
+            if(menuMessages.DropDownItems.Count >= 15) {
+                uiAction(() => menuMessages.DropDownItems.RemoveAt(0));
+            }
+
+            uiAction(() =>
+                    menuMessages.DropDownItems.Add(
+                        new ToolStripMenuItem((msg.Length > MAXL)? msg.Substring(0, MAXL) + "..." : msg) {
+                            ToolTipText = msg
+                        }
+                    )
+            );
         }
 
         private void notifyIconMain_Click(object sender, EventArgs e)
@@ -223,7 +249,7 @@ namespace net.r_eg.TmVTweaks.UI
 
         private void TrayForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            hotKeys.Dispose();
+            dispose();
         }
 
         private void menuExit_Click(object sender, EventArgs e)

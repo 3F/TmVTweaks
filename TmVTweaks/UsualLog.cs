@@ -7,6 +7,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace net.r_eg.TmVTweaks
 {
@@ -15,6 +16,11 @@ namespace net.r_eg.TmVTweaks
     /// </summary>
     internal class UsualLog: IUsualLog
     {
+        /// <summary>
+        /// When the message has been received.
+        /// </summary>
+        public event EventHandler<MessageEventArgs> Received = delegate(object sender, MessageEventArgs e) { };
+
         /// <summary>
         /// Flag of Diagnostic mode
         /// </summary>
@@ -31,8 +37,7 @@ namespace net.r_eg.TmVTweaks
         /// <param name="args"></param>
         public void info(string message, params object[] args)
         {
-            //Debug.WriteLine(message, args);
-            Console.WriteLine(message, args);
+            write(message, null);
         }
 
         /// <summary>
@@ -59,6 +64,27 @@ namespace net.r_eg.TmVTweaks
         protected UsualLog(bool diag = true)
         {
             IsDiagnostic = diag;
+        }
+
+        protected void write(string msg, string level)
+        {
+            msg = format(msg, level);
+            //Debug.WriteLine(msg);
+            Console.WriteLine(msg);
+
+            Received(this, new MessageEventArgs(msg, level));
+        }
+
+        /// <summary>
+        /// Used format.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="level"></param>
+        /// <returns>formatted</returns>
+        protected virtual string format(string message, string level)
+        {
+            string stamp = DateTime.Now.ToString("H:mm:ss.fff");
+            return $"{stamp}: {message}";
         }
     }
 }

@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageEventArgs.cs" />
     <Compile Include="UsualLog.cs" />
     <Compile Include="IUsualLog.cs" />
     <Compile Include="TeamViewerEventArgs.cs" />

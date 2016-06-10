@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace net.r_eg.TmVTweaks.HotKeys
 {
+    [Serializable]
     public class HotKeyEventArgs: EventArgs
     {
         public Modifiers Modifier

@@ -5,10 +5,17 @@
  * (see accompanying file LICENSE or a copy at https://opensource.org/licenses/MIT)
 */
 
+using System;
+
 namespace net.r_eg.TmVTweaks
 {
     internal interface IUsualLog
     {
+        /// <summary>
+        /// When the message has been received.
+        /// </summary>
+        event EventHandler<MessageEventArgs> Received;
+
         /// <summary>
         /// Flag of Diagnostic mode
         /// </summary>
