@@ -52,7 +52,7 @@ namespace net.r_eg.TmVTweaks.WinAPI
         /// <param name="nMaxCount"></param>
         /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+        public static extern int GetWindowText(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpString, int nMaxCount);
 
         /// <summary>
         /// Retrieves the length, in characters, of the specified window's title bar text (if the window has a title bar). 

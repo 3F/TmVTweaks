@@ -86,9 +86,8 @@ namespace net.r_eg.TmVTweaks
                 ((List<IntPtr>)gch.Target).Add(handle);
                 return true;
             }
-            catch {
-                //throw new WinFuncFailException();
-                log.debug($"Win32 Error: {Marshal.GetLastWin32Error()}");
+            catch(Exception ex) {
+                log.debug(ex.Message);
             }
 
             return false;
